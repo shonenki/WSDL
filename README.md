@@ -1,4 +1,4 @@
-# WSDL con PHP
+# WSDL con PHP y SoapClient
 Ejemplo de petición de un API KEY a un servidor remoto a través de WSDL utilizando PHP. Código documentado totalmente en Español.
 
 ####cliente.php (Servidor Local)
