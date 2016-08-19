@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!-- Define el Servicio -->
+<definitions name="ApiKeyServicio"
+             targetNamespace="urn:ApiKey"
+             xmlns:tns="urn:ApiKey"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns="http://schemas.xmlsoap.org/wsdl/">
+    <!-- Message define las variables de solicitud y respuesta del webservice -->
+    <message name="ApiKeyRequest">
+        <!-- Se pueden definir como string, positiveInteger, integer, float, boolean, nonNegativeInteger -->
+        <part name="solicita" type="xsd:string" />
+    </message>
+ 
+    <message name="ApiKeyResponse">
+        <part name="respuesta" type="xsd:string" />
+    </message>
+    <!-- Define de forma abstracta las operaciones que ejecutará el WebService
+    en este caso incluye en la operación "valida" los message y define el input o ouput
+    de cada uno de ellos -->
+    <portType name="ApiKeyPort">
+        <operation name="valida">
+            <input message="tns:ApiKeyRequest" />
+            <output message="tns:ApiKeyResponse" />
+        </operation>
+    </portType>
+    
+    <!-- El binding se refiere a la información de enlace, se puede observar como en el tag del "binding"
+    se define type="tns:ApikeyPort"  que es el portype definido más arriba donde se anexaron las variables de
+    solicitud y respuesta -->
+    <binding name="ApiKeyBinding" type="tns:ApiKeyPort">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+        <!-- Se define una operación vinculada al valida del ApiKeyPort a través del namespace ApiKey
+        dónde se define el input y output del binding -->
+        <operation name="valida">
+            <soap:operation soapAction="urn:ApiKey#valida" />
+            <input>
+                <soap:body use="encoded" namespace="urn:ApiKey" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="urn:ApiKey" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+    </binding>
+    
+    <!--El servicio llama al ApiKeyBinding y define la dirección de enlace (ApiKeyServicio.php) 
+    dónde que recibirá la información a través del input y devolverá al cliente remoto a través 
+    del output -->
+    <service name="ApiKeyServicio">
+        <port name="ApiKeyPort" binding="tns:ApiKeyBinding">
+            <soap:address location="http://tudominio.com/ApiKeyServicio.php" />
+        </port>
+    </service>
+</definitions>
+
+<!-- Para información más detallada en Español acerca de WSDL consultar el siguiente link:
+http://di002.edv.uniovi.es/~falvarez/WSDL.pdf -->
